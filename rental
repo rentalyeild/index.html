@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rental Yield Calculator</title>
+
+<style>
+ body {
+   font-family: Arial, sans-serif;
+   max-width: 520px;
+   margin: 20px auto;
+   padding: 16px;
+ }
+ input {
+   width: 100%;
+   padding: 8px;
+   margin: 6px 0;
+ }
+ button {
+   padding: 10px 14px;
+   margin-top: 10px;
+ }
+ .box {
+   background: #f6f7f8;
+   padding: 12px;
+   margin-top: 14px;
+ }
+</style>
+</head>
+
+<body>
+<h2>Rental Yield Calculator</h2>
+
+<label>Purchase Price</label>
+<input id="price" type="number">
+
+<label>Weekly Rent</label>
+<input id="rent" type="number">
+
+<label>Council Rates (per year)</label>
+<input id="rates" type="number">
+
+<label>Insurance (per year)</label>
+<input id="insurance" type="number">
+
+<label>Deposit</label>
+<input id="deposit" type="number">
+
+<label>Interest Rate (%)</label>
+<input id="rate" type="number" step="0.01">
+
+<button onclick="calculate()">Calculate</button>
+
+<div class="box" id="output"></div>
+
+<script>
+function calculate() {
+  const price = Number(priceInput.value);
+  const weeklyRent = Number(rent.value);
+  const ratesVal = Number(rates.value);
+  const insuranceVal = Number(insurance.value);
+  const depositVal = Number(deposit.value);
+  const interestRate = Number(rate.value) / 100;
+
+  const annualRent = weeklyRent * 52;
+  const expenses = ratesVal + insuranceVal;
+  const netBeforeFinance = annualRent - expenses;
+
+  const loan = price - depositVal;
+  const interest = loan * interestRate;
+  const cashflow = netBeforeFinance - interest;
+
+  const grossYield = (annualRent / price) * 100;
+  const netYield = (netBeforeFinance / price) * 100;
+  const cashOnCash = (cashflow / depositVal) * 100;
+
+  output.innerHTML = `
+    <strong>Results</strong><br><br>
+    Annual Rent: $${annualRent.toLocaleString()}<br>
+    Loan Amount: $${loan.toLocaleString()}<br>
+    Annual Interest: $${interest.toLocaleString()}<br><br>
+    Gross Yield: ${grossYield.toFixed(2)}%<br>
+    Net Yield: ${netYield.toFixed(2)}%<br>
+    Annual Cashflow: $${cashflow.toLocaleString()}<br>
+    Cash-on-Cash Return: ${cashOnCash.toFixed(2)}%
+  `;
+}
+</script>
+</body>
+</html>
